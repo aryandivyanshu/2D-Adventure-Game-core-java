@@ -5,6 +5,9 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener { //KeyListener is the interface to receive keyboard input or keystrokes.
 
+    //I AM ONLY CREATING A VARIABLE code THAT WILL STORE VALUE OF KEYPRESSED,
+    //AND ACCORDING TO THE VALUE IN code VARIABLE, WE WILL MANIPULATIVELY ADD VALUES TO OTHER FEW BOOLEAN VARIABLES - upPressed, downPressed, leftPressed, rightPressed
+
     public boolean upPressed, downPressed, leftPressed, rightPressed;
 
     @Override

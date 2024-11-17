@@ -21,18 +21,23 @@ public class GamePanel extends JPanel implements Runnable {
     //The screen size is same as the number of tiles that shall fit in our number of Columns and Rows
     //Why dynamic screen size? Any static number might not fit the tiles exactly without leaving gaps.
 
-    //A thread is something you can start and stop
+    KeyHandler keyH = new KeyHandler(); //instantiating KeyHandler Class then we will add this object as argument of this class. Taaki woh bhi GAmePanel ka part ho jaaye
+
+    Thread gameThread;     //A thread is something you can start and stop
     //A thread can keep your program running until you stop it
     //A thread does not do something special in itself
-    //when you wanna do something again and again, eg. Drawing screen 60 times frames per second
-    Thread gameThread;
+    //when you want to do something again and again, E.g. Drawing screen 60 times frames per second
 
+    int playerXcoordinate = 100;
+    int playerYcoordinate = 100;
+    int playerSpeed = 4;
 
     //CONSTRUCTOR OF THE GamePanel CLASS
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
+        this.addKeyListener(keyH);
     }
 
     public void startGameThread (){
@@ -58,7 +63,27 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     //back-end of the game.
-    public void update(){}
+    public void update(){
+//        // in java, upper left corner of window is 0,0----------> x+
+//                                                    |
+//                                                    |
+//                                                    |
+//                                                    V
+//                                                    y+
+
+        if(keyH.upPressed){
+            playerYcoordinate = playerYcoordinate - playerSpeed; //according to java convention up direction has lower coordinate
+        }
+        if(keyH.downPressed){
+            playerYcoordinate = playerYcoordinate + playerSpeed;
+        }
+        if(keyH.rightPressed){
+            playerXcoordinate = playerXcoordinate + playerSpeed;
+        }
+        if(keyH.leftPressed){
+            playerXcoordinate = playerXcoordinate + playerSpeed;
+        }
+    }
 
     //front-end of the game.
     public void paintComponent(Graphics g){ // actually, is a built-in method in JPanel
@@ -72,7 +97,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         Graphics2D g2 = (Graphics2D)g ; //upcasting
         g2.setColor(Color.white);
-        g2.fillRect(100,100,tileSize,tileSize);
+        g2.fillRect(playerXcoordinate,playerYcoordinate,tileSize,tileSize);
 
         g2.dispose();
 

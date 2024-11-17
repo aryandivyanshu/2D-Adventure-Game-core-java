@@ -81,7 +81,7 @@ public class GamePanel extends JPanel implements Runnable {
             playerXcoordinate = playerXcoordinate + playerSpeed;
         }
         if(keyH.leftPressed){
-            playerXcoordinate = playerXcoordinate + playerSpeed;
+            playerXcoordinate = playerXcoordinate - playerSpeed;
         }
     }
 

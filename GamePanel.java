@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
     //The screen size is same as the number of tiles that shall fit in our number of Columns and Rows
     //Why dynamic screen size? Any static number might not fit the tiles exactly without leaving gaps.
 
-    int FPS = 60; // for game loop delays. Otherwise it is millions of FPS.
+    int FPS = 60; // for game loop delays. Otherwise it is millions of FPS(refreshes). And millions of FPS will intake keypresses millions of times.
 
     KeyHandler keyH = new KeyHandler(); //instantiating KeyHandler Class then we will add this object as argument of this class. Taaki woh bhi GAmePanel ka part ho jaaye
 

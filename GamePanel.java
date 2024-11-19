@@ -21,6 +21,8 @@ public class GamePanel extends JPanel implements Runnable {
     //The screen size is same as the number of tiles that shall fit in our number of Columns and Rows
     //Why dynamic screen size? Any static number might not fit the tiles exactly without leaving gaps.
 
+    final int FPS = 60; // for game loop delays. Otherwise it is millions of FPS.
+
     KeyHandler keyH = new KeyHandler(); //instantiating KeyHandler Class then we will add this object as argument of this class. Taaki woh bhi GAmePanel ka part ho jaaye
 
     Thread gameThread;     //A thread is something you can start and stop
@@ -38,6 +40,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
+        this.setFocusable(true);//jaha focus wahi ka keyboard input lega
     }
 
     public void startGameThread (){
@@ -50,8 +53,27 @@ public class GamePanel extends JPanel implements Runnable {
     public void run() {
         //starting the thread causes the object's run method to be called in that separately executing thread.
         //with this run method, will create game loop.
+
+        //MILLIONS OF TIMES PER SECOND HO RHA, LET'S FIX THAT BY ADDING DELAY TO LOOP.
+        double drawInterval = 1000000000/FPS;
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+
         while(gameThread != null) { //as long as gameThread exists, it will repeat everything inside this bracket
-            System.out.println("Game loop test.");
+
+
+            currentTime = System.nanoTime();
+            delta = delta + ((currentTime - lastTime) / drawInterval);
+            lastTime = currentTime;
+
+            if (delta >= 1) {
+                update();
+                repaint();
+                delta--;
+            }
+
+        }
             //WE DO 2 THINGS INSIDE THE RUN METHOD, THAT IS NEEDED TO BE DONE REPEATEDLY
             //1. UPDATE - BACKEND - WE UPDATE THE INFORMATION CONTINUOUSLY.
             update();
@@ -59,7 +81,7 @@ public class GamePanel extends JPanel implements Runnable {
             repaint(); //bit confusing but to call paintComponent() we use repaint()
 
             //TO DO THIS UPDATE AND DRAW, WE CREATE 2 METHODS : update and paintComponent
-        }
+
     }
 
     //back-end of the game.

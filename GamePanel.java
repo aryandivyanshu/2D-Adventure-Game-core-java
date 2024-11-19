@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
     //The screen size is same as the number of tiles that shall fit in our number of Columns and Rows
     //Why dynamic screen size? Any static number might not fit the tiles exactly without leaving gaps.
 
-    final int FPS = 60; // for game loop delays. Otherwise it is millions of FPS.
+    int FPS = 60; // for game loop delays. Otherwise it is millions of FPS.
 
     KeyHandler keyH = new KeyHandler(); //instantiating KeyHandler Class then we will add this object as argument of this class. Taaki woh bhi GAmePanel ka part ho jaaye
 
@@ -55,22 +55,32 @@ public class GamePanel extends JPanel implements Runnable {
         //with this run method, will create game loop.
 
         //MILLIONS OF TIMES PER SECOND HO RHA, LET'S FIX THAT BY ADDING DELAY TO LOOP.
-        double drawInterval = 1000000000/FPS;
+        double drawInterval = 1_000_000_000 /FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
+        long timer = 0;
+        int drawCount = 0;
 
         while(gameThread != null) { //as long as gameThread exists, it will repeat everything inside this bracket
 
 
             currentTime = System.nanoTime();
-            delta = delta + ((currentTime - lastTime) / drawInterval);
+            delta = delta + ((currentTime - lastTime) / drawInterval );
+            timer = timer + (currentTime - lastTime);
             lastTime = currentTime;
 
             if (delta >= 1) {
                 update();
                 repaint();
                 delta--;
+                drawCount++;
+            }
+
+            if(timer >= 1_000_000_000){
+                System.out.println("FPS" + drawCount);
+                drawCount=0;
+                timer=0;
             }
 
         }
